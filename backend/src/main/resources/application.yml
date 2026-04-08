@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: grain-monitoring-system
+  datasource:
+    url: jdbc:mysql://localhost:3306/grain_monitoring?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  # MQTT 配置
+  mqtt:
+    broker-url: tcp://broker.emqx.io:1883
+    client-id: grain_backend_client
+    default-topic: /grain/sensor/data
+    username: 
+    password: 
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+
+logging:
+  level:
+    com.grain.monitoring: debug
