@@ -19,10 +19,9 @@
     <!-- 英雄区 -->
     <section class="hero-section">
       <div class="hero-content">
-        <div class="badge">专业物联网解决方案</div>
         <h1 class="hero-title">
-          <span class="light-text">智慧粮库</span>
-          <span class="gradient-text">环境监测系统</span>
+          <span class="light-text">基于Spring Boot的</span>
+          <span class="gradient-text">粮库温湿度监控预警系统</span>
         </h1>
         <p class="hero-subtitle">
           融合物联网、实时通信与大数据分析技术，为现代化粮食储备提供高精度、智能化的全方位监控方案。
@@ -193,17 +192,6 @@ const scrollToTechSection = () => {
 .hero-content {
   max-width: 640px;
   z-index: 2;
-}
-
-.badge {
-  display: inline-block;
-  padding: 6px 16px;
-  background: rgba(0, 113, 227, 0.08);
-  color: #0071e3;
-  border-radius: 100px;
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 24px;
 }
 
 .hero-title {
