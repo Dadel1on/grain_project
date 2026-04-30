@@ -27,7 +27,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         String uri = request.getRequestURI();
-        if (uri.contains("/api/auth/login")) {
+        if (uri.contains("/api/auth/login") || uri.contains("/api/auth/register")) {
             return true;
         }
 

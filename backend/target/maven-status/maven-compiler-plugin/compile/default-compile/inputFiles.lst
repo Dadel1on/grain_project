@@ -7,6 +7,7 @@ D:\softwork\bs3\grain_project\backend\src\main\java\com\grain\monitoring\control
 D:\softwork\bs3\grain_project\backend\src\main\java\com\grain\monitoring\controller\MonitoringController.java
 D:\softwork\bs3\grain_project\backend\src\main\java\com\grain\monitoring\dto\LoginRequest.java
 D:\softwork\bs3\grain_project\backend\src\main\java\com\grain\monitoring\dto\LoginResponse.java
+D:\softwork\bs3\grain_project\backend\src\main\java\com\grain\monitoring\dto\RegisterRequest.java
 D:\softwork\bs3\grain_project\backend\src\main\java\com\grain\monitoring\entity\AlarmConfig.java
 D:\softwork\bs3\grain_project\backend\src\main\java\com\grain\monitoring\entity\AlarmLog.java
 D:\softwork\bs3\grain_project\backend\src\main\java\com\grain\monitoring\entity\DeviceInfo.java

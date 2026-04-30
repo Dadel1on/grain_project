@@ -235,8 +235,9 @@ async function handleRegister() {
     }
 
     ElMessage.error(result.message || '注册失败')
-  } catch {
-    ElMessage.error('注册失败，请检查网络连接')
+  } catch (error: any) {
+    const message = error?.response?.data?.message || error?.message || '注册失败，请检查网络连接'
+    ElMessage.error(message)
   } finally {
     loading.value = false
   }

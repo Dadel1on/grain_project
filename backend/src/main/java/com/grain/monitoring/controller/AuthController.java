@@ -1,6 +1,7 @@
 package com.grain.monitoring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,9 +76,15 @@ public class AuthController {
                         ? request.getUsername().trim()
                         : request.getNickname().trim());
 
-        boolean saved = userService.save(user);
-        if (!saved) {
-            return Result.error("注册失败，请稍后重试");
+        try {
+            boolean saved = userService.save(user);
+            if (!saved) {
+                return Result.error("注册失败，请稍后重试");
+            }
+        } catch (DuplicateKeyException e) {
+            return Result.error("用户名已存在");
+        } catch (Exception e) {
+            return Result.error("注册失败，请检查数据库配置");
         }
 
         return Result.success();
