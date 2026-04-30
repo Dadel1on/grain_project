@@ -1,0 +1,39 @@
+# ===== Java / Maven =====
+**/target/
+**/*.class
+**/*.log
+
+# ===== Frontend (Node / Vite) =====
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.cache/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# ===== Environment / Secrets =====
+.env
+.env.*
+!.env.example
+*.local
+
+# ===== IDE / Editor =====
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db
+
+# ===== Misc =====
+*.swp
+*.swo
+*~
+
+# Optional local tool state
+.trae/

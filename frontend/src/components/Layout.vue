@@ -77,6 +77,20 @@
               </template>
             </el-dropdown>
 
+            <el-dropdown trigger="click" class="user-dropdown">
+              <el-button circle><el-icon><UserFilled /></el-icon></el-button>
+              <template #dropdown>
+                <div class="user-panel">
+                  <div class="user-info">
+                    <span class="user-name">{{ authStore.user?.nickname || authStore.user?.username || '管理员' }}</span>
+                  </div>
+                  <div class="user-actions">
+                    <el-button type="danger" plain size="small" @click="handleLogout">退出登录</el-button>
+                  </div>
+                </div>
+              </template>
+            </el-dropdown>
+
           </div>
         </div>
       </el-header>
@@ -120,6 +134,7 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
+import { useAuthStore } from '@/stores/auth'
 import { 
   Search, 
   Box, 
@@ -128,7 +143,8 @@ import {
   Bell, 
   DataLine,
   Back,
-  Warning
+  Warning,
+  UserFilled
 } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 
@@ -137,6 +153,7 @@ dayjs.locale('zh-cn')
 
 const router = useRouter()
 const route = useRoute()
+const authStore = useAuthStore()
 
 const unreadCount = ref(0)
 const recentAlarms = ref<any[]>([])
@@ -195,6 +212,11 @@ const goToAlarms = () => {
 
 const goToHome = () => {
   router.push('/')
+}
+
+const handleLogout = () => {
+  authStore.logout()
+  ElMessage.success('已退出登录')
 }
 
 const openSearchDialog = () => {
@@ -451,6 +473,29 @@ onUnmounted(() => {
 }
 
 .inbox-footer:hover { background: #f5f5f7; }
+
+.user-panel {
+  width: 200px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.user-info {
+  padding: 16px 20px 8px;
+  text-align: center;
+}
+
+.user-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--apple-text);
+}
+
+.user-actions {
+  padding: 8px 20px 16px;
+  text-align: center;
+}
 
 .inbox-badge :deep(.el-badge__content) {
   top: 10px;
