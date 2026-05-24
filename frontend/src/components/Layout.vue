@@ -60,7 +60,7 @@
                       暂无未处理预警
                     </div>
                     <div v-for="alarm in recentAlarms" :key="alarm.id" class="inbox-item" @click="goToAlarms">
-                      <div class="item-icon" :class="alarm.alarmType.includes('HIGH') ? 'high' : 'low'">
+                      <div class="item-icon" :class="(alarm.alarmType || '').includes('HIGH') ? 'high' : 'low'">
                         <el-icon><Warning /></el-icon>
                       </div>
                       <div class="item-body">
@@ -159,6 +159,7 @@ const unreadCount = ref(0)
 const recentAlarms = ref<any[]>([])
 const searchDialogVisible = ref(false)
 const searchKeyword = ref('')
+const deviceIds = ref<Set<string>>(new Set())
 let ws: WebSocket | null = null
 
 const quickSearchTargets = [
@@ -186,11 +187,21 @@ const alarmTypeMap: Record<string, string> = {
   'HUMIDITY_LOW': '湿度过低'
 }
 
+const fetchDevices = async () => {
+  try {
+    const res = await axios.get('/api/devices')
+    deviceIds.value = new Set(res.data.data.map((d: any) => d.deviceId))
+  } catch (error) {
+    console.error('获取设备列表失败', error)
+  }
+}
+
 const fetchUnreadAlarms = async () => {
   try {
     const res = await axios.get('/api/alarm-logs', { params: { status: 0 } })
-    recentAlarms.value = res.data.data.slice(0, 5) // 只显示最近5条
-    unreadCount.value = res.data.data.length
+    const filtered = res.data.data.filter((log: any) => deviceIds.value.has(log.deviceId))
+    recentAlarms.value = filtered.slice(0, 5)
+    unreadCount.value = filtered.length
   } catch (error) {
     console.error('获取未读报警失败', error)
   }
@@ -260,7 +271,8 @@ const connectWebSocket = () => {
   ws.onclose = () => setTimeout(connectWebSocket, 5000)
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await fetchDevices()
   fetchUnreadAlarms()
   connectWebSocket()
 })

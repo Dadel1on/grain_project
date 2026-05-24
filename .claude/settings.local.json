@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn compile *)",
+      "Bash(where mvn *)",
+      "Bash(where mvnw *)",
+      "Bash(curl -s http://localhost:8081/api/alarm-configs)",
+      "Bash(curl -s http://localhost:8081/api/devices)"
+    ]
+  }
+}

@@ -52,7 +52,18 @@ public class MonitoringController {
 
     @PostMapping("/devices")
     public Result<Boolean> addDevice(@RequestBody DeviceInfo deviceInfo) {
-        return Result.success(deviceInfoService.save(deviceInfo));
+        boolean saved = deviceInfoService.save(deviceInfo);
+        if (saved) {
+            AlarmConfig config = new AlarmConfig();
+            config.setDeviceId(deviceInfo.getDeviceId());
+            config.setMaxTemp(35.0);
+            config.setMinTemp(5.0);
+            config.setMaxHum(80.0);
+            config.setMinHum(20.0);
+            config.setUpdateTime(LocalDateTime.now());
+            alarmConfigService.save(config);
+        }
+        return Result.success(saved);
     }
 
     @PutMapping("/devices")

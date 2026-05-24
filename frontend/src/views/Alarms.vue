@@ -27,8 +27,8 @@
             <el-table-column prop="deviceId" label="设备" width="100" />
             <el-table-column prop="alarmType" label="类型" width="160">
               <template #default="{ row }">
-                <span class="apple-alarm-tag" :class="row.alarmType.includes('HIGH') ? 'high' : 'low'">
-                  {{ alarmTypeMap[row.alarmType] }}
+                <span class="apple-alarm-tag" :class="(row.alarmType || '').includes('HIGH') ? 'high' : 'low'">
+                  {{ alarmTypeMap[row.alarmType] || row.alarmType }}
                 </span>
               </template>
             </el-table-column>
@@ -122,6 +122,7 @@ const alarmConfigs = ref<any[]>([])
 const alarmStatus = ref('0')
 const configVisible = ref(false)
 const currentConfig = reactive<any>({})
+const deviceIds = ref<Set<string>>(new Set())
 
 const statusOptions = [
   { label: '待处理', value: '0' },
@@ -135,14 +136,19 @@ const alarmTypeMap: Record<string, string> = {
   'HUMIDITY_LOW': '湿度异常偏低'
 }
 
+const fetchDevices = async () => {
+  const res = await axios.get('/api/devices')
+  deviceIds.value = new Set(res.data.data.map((d: any) => d.deviceId))
+}
+
 const fetchAlarmLogs = async () => {
   const res = await axios.get('/api/alarm-logs', { params: { status: alarmStatus.value } })
-  alarmLogs.value = res.data.data
+  alarmLogs.value = res.data.data.filter((log: any) => deviceIds.value.has(log.deviceId))
 }
 
 const fetchConfigs = async () => {
   const res = await axios.get('/api/alarm-configs')
-  alarmConfigs.value = res.data.data
+  alarmConfigs.value = res.data.data.filter((c: any) => deviceIds.value.has(c.deviceId))
 }
 
 const handleAlarm = async (row: any) => {
@@ -169,7 +175,8 @@ const saveConfig = async () => {
   fetchConfigs()
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await fetchDevices()
   fetchAlarmLogs()
   fetchConfigs()
 })
